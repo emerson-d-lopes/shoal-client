@@ -23,7 +23,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
-    "prepublishOnly": "pnpm build && pnpm test"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build && npm run test"
   },
   "packageManager": "pnpm@10.27.0",
   "dependencies": {
