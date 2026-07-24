@@ -1,0 +1,48 @@
+{
+  "name": "shoal-client",
+  "version": "0.1.0",
+  "description": "TypeScript client for shoal — self-hosted E2E-encrypted sync for local-first apps",
+  "license": "MIT",
+  "repository": "github:emerson-d-lopes/shoal-client",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./dexie": {
+      "types": "./dist/dexie.d.ts",
+      "import": "./dist/dexie.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "prepublishOnly": "pnpm build && pnpm test"
+  },
+  "packageManager": "pnpm@10.27.0",
+  "dependencies": {
+    "@noble/ciphers": "^1.2.0",
+    "@noble/curves": "^1.8.0",
+    "@noble/hashes": "^1.7.0",
+    "@scure/bip39": "^1.5.0"
+  },
+  "peerDependencies": {
+    "dexie": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "dexie": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "dexie": "^4.0.11",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}
