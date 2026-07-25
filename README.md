@@ -51,6 +51,12 @@ The outbox lives in your app's own database, so writes never wait on the
 network and a dead server costs nothing. `sync()` throws on failure; call it
 opportunistically and retry later.
 
+## Related
+
+[shoal](https://github.com/emerson-d-lopes/shoal) is the server this talks to. Protocol
+documentation is at [shoal.edfl.dev](https://shoal.edfl.dev).
+
 ## License
 
 MIT
+
