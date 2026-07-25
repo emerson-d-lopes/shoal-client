@@ -2,7 +2,7 @@
 
 TypeScript client for [shoal](https://github.com/emerson-d-lopes/shoal),
 the self-hosted end-to-end-encrypted sync server for local-first apps.
-Wire-compatible with the Kotlin client (tuna) and the Rust server: the test
+Wire-compatible with the Kotlin client and the Rust server: the test
 suite pins the exact identity derivation all clients share.
 
 Crypto is [noble/scure](https://paulmillr.com/noble/): BIP39 phrase to an

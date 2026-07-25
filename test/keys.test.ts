@@ -29,15 +29,15 @@ describe("SyncKeys", () => {
   it("encrypts and decrypts with record binding", () => {
     const keys = SyncKeys.fromMnemonic(PHRASE);
     const pt = new TextEncoder().encode('{"name":"road trip"}');
-    const ct = keys.encrypt(pt, "tuna", "playlist/abc");
-    expect(keys.decrypt(ct, "tuna", "playlist/abc")).toEqual(pt);
-    expect(() => keys.decrypt(ct, "tuna", "playlist/OTHER")).toThrow();
+    const ct = keys.encrypt(pt, "mnemonic", "card/abc");
+    expect(keys.decrypt(ct, "mnemonic", "card/abc")).toEqual(pt);
+    expect(() => keys.decrypt(ct, "mnemonic", "card/OTHER")).toThrow();
   });
 
   it("cannot decrypt with a different phrase", () => {
     const a = SyncKeys.fromMnemonic(PHRASE);
     const b = SyncKeys.fromMnemonic(SyncKeys.generateMnemonic());
-    const ct = a.encrypt(new TextEncoder().encode("data"), "tuna", "r/1");
-    expect(() => b.decrypt(ct, "tuna", "r/1")).toThrow();
+    const ct = a.encrypt(new TextEncoder().encode("data"), "mnemonic", "r/1");
+    expect(() => b.decrypt(ct, "mnemonic", "r/1")).toThrow();
   });
 });
