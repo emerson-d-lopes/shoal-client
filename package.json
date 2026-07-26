@@ -2,7 +2,7 @@
   "name": "shoal-client",
   "version": "0.1.0",
   "description": "TypeScript client for shoal — self-hosted E2E-encrypted sync for local-first apps",
-  "license": "MIT",
+  "license": "MIT OR Apache-2.0",
   "repository": "github:emerson-d-lopes/shoal-client",
   "type": "module",
   "main": "./dist/index.js",
