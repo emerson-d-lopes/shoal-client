@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    // The base config roots at src/ so declarations land flat in dist/. This
+    // config only typechecks, so it can widen the root to take in test/ too.
+    "rootDir": "."
+  },
+  "include": ["src", "test"]
+}

@@ -22,8 +22,23 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Typecheck
+        run: pnpm typecheck
+
       - name: Build
         run: pnpm build
+
+      # dist/ is committed so the package can be installed straight from git
+      # (pnpm 10 does not run a dependency's prepare script). That only holds
+      # while the committed output matches src, so a stale build fails here
+      # instead of shipping silently to consumers.
+      - name: Check committed dist is up to date
+        run: |
+          if ! git diff --quiet -- dist; then
+            echo "::error::dist/ is out of date. Run 'pnpm build' and commit the result."
+            git diff --stat -- dist
+            exit 1
+          fi
 
       - name: Test
         run: pnpm test

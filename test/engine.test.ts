@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ShoalSync, type OutboxOp, type ShoalStorage } from "../src/engine.js";
 import { SyncKeys, b64url, b64urlDecode } from "../src/keys.js";
 import { Hlc } from "../src/hlc.js";
@@ -70,6 +70,39 @@ function makeSync(server: ReturnType<typeof fakeServer>, nodeId: number, applied
 }
 
 describe("ShoalSync", () => {
+  it("default fetch survives browser receiver rules (Illegal invocation)", async () => {
+    // window.fetch throws "Illegal invocation" when called with any receiver
+    // other than the window. Node's fetch ignores the receiver, so the global
+    // is stubbed with one that enforces the browser rule. Constructed without
+    // fetchImpl, the engine must bind the global before calling it.
+    const server = fakeServer();
+    const strictFetch = function (this: unknown, ...args: Parameters<typeof fetch>) {
+      if (this !== undefined && this !== globalThis) {
+        throw new TypeError("Failed to execute 'fetch' on 'Window': Illegal invocation");
+      }
+      return server.fetchImpl(...args);
+    };
+    vi.stubGlobal("fetch", strictFetch);
+    try {
+      const applied: Record<string, unknown> = {};
+      const dev = new ShoalSync({
+        serverUrl: "http://fake",
+        mnemonic: PHRASE,
+        collection: "test",
+        nodeId: 1,
+        storage: new MemoryStorage(),
+        apply: async (recordId, body) => {
+          applied[recordId] = body;
+        },
+      });
+      await dev.record("habit/h1", { name: "run", createdAt: 1 });
+      await dev.sync();
+      expect(server.log).toHaveLength(1);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it("pushes encrypted ops and another device pulls and applies them", async () => {
     const server = fakeServer();
     const appliedA: Record<string, unknown> = {};

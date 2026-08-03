@@ -12,13 +12,31 @@ import type { OutboxOp, ShoalStorage } from "./engine.js";
  *     _shoal_meta: "recordId",
  *     _shoal_kv: "key",
  *   });
+ *
+ * Every key is namespaced by collection. Two collections sharing one database
+ * would otherwise share a single cursor, and the second to sync would skip
+ * every op below the first one's position and never see it again.
+ *
+ * Stores written before this namespacing are upgraded in place on first use,
+ * so no app schema change is needed.
  */
 export declare class DexieShoalStorage implements ShoalStorage {
     private readonly db;
-    constructor(db: Dexie);
+    private readonly collection;
+    private upgrade?;
+    constructor(db: Dexie, collection?: string);
     private get outbox();
     private get meta();
     private get kv();
+    private metaKey;
+    private cursorKey;
+    private versionKey;
+    /**
+     * Moves un-namespaced keys written by earlier versions under this
+     * collection. Runs at most once per instance and is safe to interleave with
+     * normal use, because it only ever renames keys this collection would own.
+     */
+    private ensureUpgraded;
     enqueue(op: OutboxOp): Promise<void>;
     outboxBatch(limit: number): Promise<OutboxOp[]>;
     clearOutbox(opIds: string[]): Promise<void>;

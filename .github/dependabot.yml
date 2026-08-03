@@ -1,0 +1,21 @@
+version: 2
+updates:
+  # The crypto dependencies (@noble/*, @scure/bip39) are the whole security
+  # boundary of this client, so a release there should open a PR the same day.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      noble-scure:
+        patterns:
+          - "@noble/*"
+          - "@scure/*"
+      dev-dependencies:
+        dependency-type: development
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
