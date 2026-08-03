@@ -1,0 +1,35 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shoal example — synced todos</title>
+<style>
+  body { font: 15px/1.6 system-ui, sans-serif; max-width: 34rem; margin: 3rem auto; padding: 0 1rem; }
+  fieldset { border: 1px solid #ccc; border-radius: 6px; margin-bottom: 1.5rem; }
+  input, textarea, button { font: inherit; }
+  #server, #phrase { width: 100%; box-sizing: border-box; margin-bottom: .5rem; }
+  #status { color: #666; font-size: .85rem; }
+  ul { list-style: none; padding: 0; }
+  li { display: flex; gap: .5rem; align-items: center; padding: .25rem 0; }
+  li span { flex: 1; }
+  .done { text-decoration: line-through; color: #999; }
+  li button { border: none; background: none; color: #c00; cursor: pointer; }
+</style>
+
+<h1>synced todos</h1>
+<p>Same recovery phrase in two browsers = same list, live. The server only
+ever stores ciphertext.</p>
+
+<fieldset>
+  <legend>sync</legend>
+  <input id="server" placeholder="server url, e.g. http://127.0.0.1:7420">
+  <textarea id="phrase" rows="2" placeholder="12-word recovery phrase (leave empty to generate one)"></textarea>
+  <button id="enable">enable sync</button>
+  <div id="status">off</div>
+</fieldset>
+
+<form id="add">
+  <input id="text" placeholder="new todo" autocomplete="off">
+</form>
+<ul id="list"></ul>
+
+<script src="bundle.js"></script>
