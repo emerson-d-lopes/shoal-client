@@ -9,7 +9,12 @@ Crypto is [noble/scure](https://paulmillr.com/noble/): BIP39 phrase to an
 ed25519 request-signing key and an XChaCha20-Poly1305 payload key. The
 server only ever sees ciphertext.
 
-![shoal-client architecture](docs/architecture.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/client-dark.svg">
+  <img alt="what happens between record() and the server, and between a poke and apply()?" src="docs/client-light.svg">
+</picture>
+
+*what happens between record() and the server, and between a poke and apply()?* an op that fails to decrypt records its clock and fires onUndecryptable instead of wedging sync. a 413 halves the batch and retries. concurrent sync() calls join the round in flight and schedule exactly one more, so a poke landing mid-sync is never lost.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/architecture-dark.svg">
