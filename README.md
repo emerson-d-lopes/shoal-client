@@ -11,6 +11,13 @@ server only ever sees ciphertext.
 
 ![shoal-client architecture](docs/architecture.png)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/architecture-dark.svg">
+  <img alt="architecture: what does the server see when a record moves from one device to another?" src="docs/architecture-light.svg">
+</picture>
+
+*what does the server see when a record moves from one device to another?* the only secret is the 12-word phrase. the same words on a new phone derive the same keys and the same user id, and a sync() replays the log. key loss is data loss, and that trade is documented rather than hidden.
+
 ## Install
 
 ```sh
